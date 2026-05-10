@@ -23,6 +23,59 @@
             box-shadow: 0 2px 6px rgba(0,0,0,0.3);
         }
         .controls button:active { background: #ddd; transform: scale(0.95); }
+        .clickable-art {
+            cursor: pointer;
+        }
+        .clickable-art:hover {
+            opacity: 0.8;
+        }
+        .video-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .video-modal.active {
+            display: flex;
+        }
+        .video-modal-content {
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .video-modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255,255,255,0.8);
+            color: #000;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 10000;
+        }
+        .video-modal-close:hover {
+            background: #fff;
+        }
+        .twitter-embed-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
     </style>
 </head>
 <body>
@@ -43,28 +96,57 @@
         <a-plane position="-20 2.5 0" rotation="0 90 0" width="20" height="5" color="#2a2a2a"></a-plane>
         <a-plane position="20 2.5 0" rotation="0 -90 0" width="20" height="5" color="#2a2a2a"></a-plane>
 
-        <!-- 14 Pictures (replace src attributes as needed) -->
+        <!-- 14 Pictures with clickable links -->
         <!-- Back wall (z = -10) -->
-        <a-image src="https://picsum.photos/id/1015/1200/800" position="-15 2.5 -9.9" width="3.8" height="2.85"></a-image>
-        <a-image src="https://picsum.photos/id/133/1200/800" position="-7.5 2.5 -9.9" width="3.8" height="2.85"></a-image>
-        <a-image src="https://picsum.photos/id/160/1200/800" position="0 2.5 -9.9" width="3.8" height="2.85"></a-image>
-        <a-image src="https://picsum.photos/id/201/1200/800" position="7.5 2.5 -9.9" width="3.8" height="2.85"></a-image>
-        <a-image src="https://picsum.photos/id/251/1200/800" position="15 2.5 -9.9" width="3.8" height="2.85"></a-image>
+        <a-entity class="clickable-art" position="-15 2.5 -9.9" data-url="https://example.com/art1">
+            <a-image src="https://picsum.photos/id/1015/1200/800" width="3.8" height="2.85"></a-image>
+        </a-entity>
+        <a-entity class="clickable-art" position="-7.5 2.5 -9.9" data-url="https://example.com/art2">
+            <a-image src="https://picsum.photos/id/133/1200/800" width="3.8" height="2.85"></a-image>
+        </a-entity>
+        <a-entity class="clickable-art" position="0 2.5 -9.9" data-url="https://example.com/art3">
+            <a-image src="https://picsum.photos/id/160/1200/800" width="3.8" height="2.85"></a-image>
+        </a-entity>
+        <a-entity class="clickable-art" position="7.5 2.5 -9.9" data-url="https://example.com/art4">
+            <a-image src="https://picsum.photos/id/201/1200/800" width="3.8" height="2.85"></a-image>
+        </a-entity>
+        <a-entity class="clickable-art" position="15 2.5 -9.9" data-url="https://example.com/art5">
+            <a-image src="https://picsum.photos/id/251/1200/800" width="3.8" height="2.85"></a-image>
+        </a-entity>
 
         <!-- Front wall (z = +10) -->
-        <a-image src="https://picsum.photos/id/1005/1200/800" position="-15 2.5 9.9" rotation="0 180 0" width="3.8" height="2.85"></a-image>
-        <a-image src="https://picsum.photos/id/1016/1200/800" position="-7.5 2.5 9.9" rotation="0 180 0" width="3.8" height="2.85"></a-image>
-        <a-image src="https://picsum.photos/id/1027/1200/800" position="0 2.5 9.9" rotation="0 180 0" width="3.8" height="2.85"></a-image>
-        <a-image src="https://picsum.photos/id/1033/1200/800" position="7.5 2.5 9.9" rotation="0 180 0" width="3.8" height="2.85"></a-image>
-        <a-image src="https://picsum.photos/id/1040/1200/800" position="15 2.5 9.9" rotation="0 180 0" width="3.8" height="2.85"></a-image>
+        <a-entity class="clickable-art" position="-15 2.5 9.9" rotation="0 180 0" data-url="https://example.com/art6">
+            <a-image src="https://picsum.photos/id/1005/1200/800" width="3.8" height="2.85"></a-image>
+        </a-entity>
+        <a-entity class="clickable-art" position="-7.5 2.5 9.9" rotation="0 180 0" data-url="https://example.com/art7">
+            <a-image src="https://picsum.photos/id/1016/1200/800" width="3.8" height="2.85"></a-image>
+        </a-entity>
+        <a-entity class="clickable-art" position="0 2.5 9.9" rotation="0 180 0" data-url="https://example.com/art8">
+            <a-image src="https://picsum.photos/id/1027/1200/800" width="3.8" height="2.85"></a-image>
+        </a-entity>
+        <a-entity class="clickable-art" position="7.5 2.5 9.9" rotation="0 180 0" data-url="https://example.com/art9">
+            <a-image src="https://picsum.photos/id/1033/1200/800" width="3.8" height="2.85"></a-image>
+        </a-entity>
+        <a-entity class="clickable-art" position="15 2.5 9.9" rotation="0 180 0" data-url="https://example.com/art10">
+            <a-image src="https://picsum.photos/id/1040/1200/800" width="3.8" height="2.85"></a-image>
+        </a-entity>
 
         <!-- Left wall -->
-        <a-image src="https://picsum.photos/id/1080/1200/800" position="-19.9 2.5 -6" rotation="0 90 0" width="3.8" height="2.85"></a-image>
-        <a-image src="https://picsum.photos/id/110/1200/800" position="-19.9 2.5 6" rotation="0 90 0" width="3.8" height="2.85"></a-image>
+        <a-entity class="clickable-art" position="-19.9 2.5 -6" rotation="0 90 0" data-url="https://example.com/art11">
+            <a-image src="https://picsum.photos/id/1080/1200/800" width="3.8" height="2.85"></a-image>
+        </a-entity>
+        <a-entity class="clickable-art" position="-19.9 2.5 6" rotation="0 90 0" data-url="https://example.com/art12">
+            <a-image src="https://picsum.photos/id/110/1200/800" width="3.8" height="2.85"></a-image>
+        </a-entity>
 
         <!-- Right wall -->
-        <a-image src="https://picsum.photos/id/29/1200/800" position="19.9 2.5 -6" rotation="0 -90 0" width="3.8" height="2.85"></a-image>
-        <a-image src="https://picsum.photos/id/30/1200/800" position="19.9 2.5 6" rotation="0 -90 0" width="3.8" height="2.85"></a-image>
+        <a-entity class="clickable-art video-trigger" position="19.9 2.5 -6" rotation="0 -90 0" data-video-id="2053592930066051161">
+            <a-image src="https://picsum.photos/id/29/1200/800" width="3.8" height="2.85"></a-image>
+            <a-text value="▶ PLAY VIDEO" position="0 0 0.1" align="center" width="4" height="2" color="#ffff00" font-size="200"></a-text>
+        </a-entity>
+        <a-entity class="clickable-art" position="19.9 2.5 6" rotation="0 -90 0" data-url="https://example.com/art14">
+            <a-image src="https://picsum.photos/id/30/1200/800" width="3.8" height="2.85"></a-image>
+        </a-entity>
 
         <!-- Camera -->
         <a-camera id="cam" position="0 1.6 9" wasd-controls="acceleration: 45" look-controls="pointerLockEnabled: true"></a-camera>
@@ -75,9 +157,23 @@
 
     <div class="info">
         <strong>Vernissage 3D Hall</strong><br>
-        14 artworks • Walk freely<br>
+        14 artworks • 1 video<br>
+        Click artworks for links/video<br>
         Desktop: WASD keys<br>
         Mobile: Use on-screen arrows
+    </div>
+
+    <!-- Video Modal -->
+    <div class="video-modal" id="videoModal">
+        <div class="video-modal-content">
+            <button class="video-modal-close" onclick="closeVideoModal()">✕</button>
+            <div class="twitter-embed-container">
+                <blockquote class="twitter-tweet" data-theme="dark">
+                    <a href="https://x.com/i/status/2053592930066051161"></a>
+                </blockquote>
+                <script async src="https://platform.x.com/widgets.js" charset="utf-8"></script>
+            </div>
+        </div>
     </div>
 
     <!-- On-screen movement controls -->
@@ -91,6 +187,35 @@
     </div>
 
     <script>
+        // Close video modal
+        function closeVideoModal() {
+            document.getElementById('videoModal').classList.remove('active');
+        }
+
+        // Close on ESC key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeVideoModal();
+            }
+        });
+
+        // Handle clicks on artworks
+        document.querySelectorAll('.clickable-art').forEach(entity => {
+            entity.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const videoId = this.getAttribute('data-video-id');
+                const url = this.getAttribute('data-url');
+                
+                if (videoId) {
+                    // Open video modal for Twitter video
+                    document.getElementById('videoModal').classList.add('active');
+                } else if (url) {
+                    // Open URL in new tab for regular links
+                    window.open(url, '_blank');
+                }
+            });
+        });
+
         window.addEventListener('load', function () {
             const camera = document.getElementById('cam');
             let moveForward = false;
@@ -134,7 +259,7 @@
             // Continuous movement loop
             function updateMovement() {
                 const now = Date.now();
-                const dt = Math.min((now - lastTime) / 16, 3); // normalize to \~60 fps
+                const dt = Math.min((now - lastTime) / 16, 3); // normalize to ~60 fps
                 lastTime = now;
 
                 if (!camera) return;
