@@ -26,18 +26,22 @@
     <span id="visitor-count" style="color:#ffd700; font-weight:bold;">0</span>
 </div>
 
+<!-- Visitor Counter - Starting at 4200 -->
+<div style="position: fixed; bottom: 15px; left: 15px; right: 15px; background: rgba(40,25,15,0.95); 
+            color: #f5d9a0; padding: 16px; border-radius: 15px; text-align: center; 
+            border: 3px solid #d4b89c; font-size: 18px; z-index: 9999; box-shadow: 0 6px 25px rgba(0,0,0,0.8);">
+    👥 <strong>Visitors:</strong> 
+    <span id="visitor-count" style="color:#ffd700; font-size: 26px; font-weight: bold;">4,200</span>
+</div>
 
 <script>
-    fetch('https://api.countapi.xyz/hit/DJPetraDJP/AIARTs-visitors')
-        .then(res => res.json())
+    fetch('https://api.countapi.xyz/hit/DJPetraDJP/AIARTs2025')
+        .then(r => r.json())
         .then(data => {
-            document.getElementById('visitor-count').textContent = 
-                data.value.toLocaleString('en-US');
-        })
-        .catch(() => {
-            document.getElementById('visitor-count').textContent = "1,248";
+            document.getElementById('visitor-count').textContent = data.value;
         });
 </script>
+
 
     
     
