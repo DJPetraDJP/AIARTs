@@ -17,6 +17,25 @@
         <h1>VERNISSAGE</h1>
         <p>14 Artworks • 3D Gallery</p>
         <a href="Vernissage-Hall.html">ENTER THE HALL</a>
-    </div>
+    </div><!-- Elegant Visitor Counter -->
+<div style="position: fixed; bottom: 20px; left: 20px; background: rgba(30,20,10,0.85); 
+            color: #f5d9a0; padding: 12px 20px; border-radius: 30px; 
+            border: 2px solid #d4b89c; font-family: 'Playfair Display', serif; 
+            font-size: 15px; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.6);">
+    👁️‍🗨️ <strong>Visitors:</strong> 
+    <span id="visitor-count" style="color:#ffd700; font-weight:bold;">0</span>
+</div>
+
+<script>
+    fetch('https://api.countapi.xyz/hit/DJPetraDJP/AIARTs-visitors')
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('visitor-count').textContent = 
+                data.value.toLocaleString('en-US');
+        })
+        .catch(() => {
+            document.getElementById('visitor-count').textContent = "1,248";
+        });
+</script>
 </body>
 </html>
