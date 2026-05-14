@@ -21,14 +21,92 @@
 
 <div 
 
-    <!-- Super Simple Big Counter for Samsung -->
-<div style="position: fixed; bottom: 20px; left: 20px; right: 20px; background: #2a1a0f; 
-            color: #ffd700; padding: 20px; border-radius: 12px; text-align: center; 
-            border: 4px solid #d4b89c; font-size: 22px; z-index: 99999; 
-            box-shadow: 0 8px 30px rgba(0,0,0,0.9);">
-    👥 Visitors: <span id="visitor-count" style="font-size:28px; font-weight:bold;">4,200</span>
+<!-- Persistent Visitor Counter - Most Robust Version -->
+<div style="position: fixed; bottom: 15px; left: 15px; right: 15px; background: #2a1a0f; 
+            color: #ffd700; padding: 18px; border-radius: 12px; text-align: center; 
+            border: 4px solid #d4b89c; font-size: 20px; z-index: 99999; 
+            box-shadow: 0 8px 30px rgba(0,0,0,0.9); max-width: 380px; margin: 0 auto;">
+    👥 Visitors: <span id="visitor-count" style="font-size:26px; font-weight:bold;">4,200</span>
 </div>
-    
+
+<script>
+(function() {
+    'use strict';
+
+    const countElement = document.getElementById('visitor-count');
+    if (!countElement) {
+        console.error('Visitor counter element not found.');
+        return;
+    }
+
+    let currentCount = 4200;
+    const STORAGE_KEY = 'persistentVisitorCount';
+
+    // Try IndexedDB first, then localStorage
+    async function loadCount() {
+        try {
+            // IndexedDB
+            const db = await new Promise((resolve, reject) => {
+                const req = indexedDB.open('VisitorDB', 1);
+                req.onupgradeneeded = e => e.target.result.createObjectStore('data');
+                req.onsuccess = () => resolve(req.result);
+                req.onerror = () => reject(req.error);
+            });
+
+            const tx = db.transaction('data', 'readonly');
+            const store = tx.objectStore('data');
+            const getReq = store.get(STORAGE_KEY);
+
+            return new Promise(resolve => {
+                getReq.onsuccess = () => resolve(getReq.result || 4200);
+                getReq.onerror = () => resolve(4200);
+            });
+        } catch (e) {
+            // Fallback to localStorage
+            return parseInt(localStorage.getItem(STORAGE_KEY)) || 4200;
+        }
+    }
+
+    function saveCount(count) {
+        localStorage.setItem(STORAGE_KEY, count); // Always save here as backup
+
+        try {
+            const req = indexedDB.open('VisitorDB', 1);
+            req.onsuccess = () => {
+                const db = req.result;
+                const tx = db.transaction('data', 'readwrite');
+                tx.objectStore('data').put(count, STORAGE_KEY);
+            };
+        } catch (e) {}
+    }
+
+    async function init() {
+        currentCount = await loadCount();
+        countElement.textContent = currentCount.toLocaleString('en-US');
+
+        function increment() {
+            currentCount += Math.floor(Math.random() * 4) + 1;
+            
+            countElement.style.transition = 'transform 0.25s ease-out';
+            countElement.style.transform = 'scale(1.18)';
+            countElement.textContent = currentCount.toLocaleString('en-US');
+            
+            saveCount(currentCount);
+            
+            setTimeout(() => countElement.style.transform = 'scale(1)', 280);
+        }
+
+        setTimeout(increment, 1000);
+        setInterval(increment, 4800 + Math.random() * 4200); // \~5–9 seconds
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+</script>
     
 </body>
 </html>
